@@ -16,5 +16,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("{:?}", rows);
 
+    let rows = get_leagues(&api, None)
+        .await
+        .expect("failed to get response");
+    println!();
+    println!("{:?}", rows);
+
     Ok(())
 }
