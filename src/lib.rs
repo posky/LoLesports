@@ -21,7 +21,14 @@ async fn get_json_response(
 
     match rows.len() {
         0 => Ok(None),
-        _ => Ok(Some(rows.clone())),
+        _ => {
+            let rows: Vec<_> = rows
+                .iter()
+                .map(|row| row.get("title").unwrap().clone())
+                .collect();
+
+            Ok(Some(rows))
+        }
     }
 }
 
@@ -54,5 +61,17 @@ pub async fn get_leagues(
 ) -> Result<Option<Vec<Value>>, Box<dyn std::error::Error>> {
     let tables = "Leagues=L";
     let fields = "L.League, L.League_Short, L.Region, L.Level, L.IsOfficial";
+
     cargoquery(api, tables, fields, where_condition, None).await
+}
+
+pub async fn get_tournaments(
+    api: &Api,
+    where_condition: Option<&str>,
+) -> Result<Option<Vec<Value>>, Box<dyn std::error::Error>> {
+    let tables = "Leagues=L, Tournaments=T";
+    let fields = "T.Name, T.OverviewPage, T.DateStart, T.Date, T.League, T.Region, T.EventType, T.StandardName, T.Split, T.SplitNumber, T.TournamentLevel, T.IsQualifier, T.IsPlayoffs, T.IsOfficial, T.Year";
+    let join_on = Some("L.League=T.League");
+
+    cargoquery(api, tables, fields, where_condition, join_on).await
 }
