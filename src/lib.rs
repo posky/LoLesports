@@ -75,3 +75,14 @@ pub async fn get_tournaments(
 
     cargoquery(api, tables, fields, where_condition, join_on).await
 }
+
+pub async fn get_scoreboard_games(
+    api: &Api,
+    where_condition: Option<&str>,
+) -> Result<Option<Vec<Value>>, Box<dyn std::error::Error>> {
+    let tables = "Tournaments=T, ScoreboardGames=SG";
+    let fields = "SG.OverviewPage, SG.Team1, SG.Team2, SG.WinTeam, SG.LossTeam, SG.DateTime_UTC, SG.Team1Score, SG.Team2Score, SG.Winner, SG.Gamelength, SG.Gamelength_Number, SG.Team1Bans, SG.Team2Bans, SG.Team1Picks, SG.Team2Picks, SG.Team1Players, SG.Team2Players, SG.Team1Dragons, SG.Team2Dragons, SG.Team1Barons, SG.Team2Barons, 'SG.Team1Towers, SG.Team2Towers, SG.Team1Gold, SG.Team2Gold, SG.Team1Kills, SG.Team2Kills, SG.Team1RiftHeralds, SG.Team2RiftHeralds, SG.Team1Inhibitors, SG.Team2Inhibitors, SG.Patch, SG.GameId, SG.MatchId, SG.RiotGameId";
+    let join_on = Some("T.OverviewPage=SG.OverviewPage");
+
+    cargoquery(api, tables, fields, where_condition, join_on).await
+}
