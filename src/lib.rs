@@ -105,3 +105,13 @@ pub async fn get_tournament_rosters(
 
     cargoquery(api, tables, fields, where_condition, join_on).await
 }
+
+pub async fn get_player_redirects(
+    api: &Api,
+    where_condition: Option<&str>,
+) -> Result<Json, ResponseError> {
+    let tables = "PlayerRedirects=PR";
+    let fields = "PR.AllName, PR.OverviewPage, PR.ID";
+
+    cargoquery(api, tables, fields, where_condition, None).await
+}
