@@ -28,7 +28,7 @@ async fn get_json_response(api: &Api, params: &[(&str, &str)]) -> Result<Json, R
                 .collect();
 
             Ok(Some(rows))
-        }
+        },
     }
 }
 
@@ -112,6 +112,13 @@ pub async fn get_player_redirects(
 ) -> Result<Json, ResponseError> {
     let tables = "PlayerRedirects=PR";
     let fields = "PR.AllName, PR.OverviewPage, PR.ID";
+
+    cargoquery(api, tables, fields, where_condition, None).await
+}
+
+pub async fn get_teams(api: &Api, where_condition: Option<&str>) -> Result<Json, ResponseError> {
+    let tables = "Teams=T";
+    let fields = "T.Name, T.OverviewPage, T.Short, T.Location, T.TeamLocation, T.Region, T.OrganizationPage, T.Image, T.Twitter, T.Youtube, T.Facebook, T.Instagram, T.Discord, T.Snapchat, T.Vk, T.Subreddit, T.Website, T.RosterPhoto, T.IsDisbanded, T.RenamedTo, T.IsLowercase";
 
     cargoquery(api, tables, fields, where_condition, None).await
 }
