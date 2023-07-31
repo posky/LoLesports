@@ -122,3 +122,13 @@ pub async fn get_teams(api: &Api, where_condition: Option<&str>) -> Result<Json,
 
     cargoquery(api, tables, fields, where_condition, None).await
 }
+
+pub async fn get_tournament_results(
+    api: &Api,
+    where_condition: Option<&str>,
+) -> Result<Json, ResponseError> {
+    let tables = "TournamentResults=TR";
+    let fields = "TR.Event, TR.Tier, TR.Date, TR.RosterPage, TR.Place, TR.ForceNewPlace, TR.Place_Number, TR.Qualified, TR.Prize, TR.Prize_USD, TR.Prize_Euro, TR.PrizeUnit, TR.Prize_Markup, TR.PrizeOther, TR.Phase, TR.Team, TR.IsAchievement, TR.LastResult, TR.LastTeam, TR.LastOpponent_Markup, TR.GroupName, TR.LastOutcome, TR.PageAndTeam, TR.OverviewPage, TR.UniqueLine";
+
+    cargoquery(api, tables, fields, where_condition, None).await
+}
