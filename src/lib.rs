@@ -1,9 +1,11 @@
 use mediawiki::api::Api;
-use serde_json::value::Value;
+use serde_json::{to_value, value::Value};
+
+mod tables;
 
 const API_URL: &str = "https://lol.fandom.com/api.php";
 
-type Json = Option<Vec<Value>>;
+type Json = Option<Value>;
 type ResponseError = Box<dyn std::error::Error>;
 
 pub async fn get_api() -> Result<Api, ResponseError> {
@@ -27,7 +29,7 @@ async fn get_json_response(api: &Api, params: &[(&str, &str)]) -> Result<Json, R
                 .map(|row| row.get("title").unwrap().clone())
                 .collect();
 
-            Ok(Some(rows))
+            Ok(Some(to_value(rows)?))
         },
     }
 }
